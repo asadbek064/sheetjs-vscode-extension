@@ -74,4 +74,4 @@ Want to integrate SheetJS in your own VSCode extension? Check out our [detailed 
 For more information on using this extension and integrating SheetJS capabilities in your own projects, visit our [documentation](https://docs.sheetjs.com/docs/).
 
 ---
-_Created by Asadbek Karimov  | [asad@sheetjs.com](mailto:asad@sheetjs.com) | [asadk.dev](https://asadk.dev)_
+_Created by Asadbek Karimov  | [contact@asadk.dev](mailto:contact@asadk.dev) | [asadk.dev](https://asadk.dev)_

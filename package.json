@@ -5,7 +5,7 @@
   "author": "Asadbek Karimov <contact@asadk.dev>",
   "publisher": "asadbek",
   "icon": "img/logo.png",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://git.sheetjs.com/asadbek064/sheetjs-vscode-extension/issues"
