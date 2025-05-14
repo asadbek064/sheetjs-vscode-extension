@@ -1,71 +1,67 @@
-# sheetjs-demo README
+# SheetJS VSCode Extension
 
-This is the README for your extension "sheetjs-demo". After writing up a brief description, we recommend including the following sections.
+<img src="./asset/sheetjs-vscode-extension-demo.gif" alt="SheetJS VSCode Extension Preview" width="600"/>
 
-## Features
+A simple VSCode extension that lets you view spreadsheets right in your editor. Works with XLSX, XLS, CSV, ODS and 30+ other formats.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## Key Features
+The extension uses sophisticated optimization techniques to ensure smooth performance:
 
-For example if there is an image subfolder under your extension project workspace:
+- **Multi-level Caching**
+    - Workbook cache prevents redundant parsing of the same files
+    - Sheet HTML cache eliminates regeneration of previously viewed sheets
+- **Smart Loading Strategy**
+    - First sheet loads immediately for instant feedback
+    - Additional sheets load on-demand when selected
+    - Preserved webview context maintains your state even when hidden
+- **Responsive Interface**
+    - Immediate loading spinner provides visual feedback
+    - Sheet-switching indicators keep you informed
+    - Persistent state across view changes
 
-\!\[feature X\]\(images/feature-x.png\)
+--- 
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Supported File Formats
 
-## Requirements
+| Supported File Formats |
+| ---------------------- |
+| *.xlsx                 |
+| *.xlsm                 |
+| *.xlsb                 |
+| *.xls                  |
+| *.xlw                  |
+| *.xlr                  |
+| *.numbers              |
+| *.csv                  |
+| *.dif                  |
+| *.slk                  |
+| *.sylk                 |
+| *.prn                  |
+| *.et                   |
+| *.ods                  |
+| *.fods                 |
+| *.uos                  |
+| *.dbf                  |
+| *.wk1                  |
+| *.wk3                  |
+| *.wks                  |
+| *.wk2                  |
+| *.wk4                  |
+| *.123                  |
+| *.wq1                  |
+| *.wq2                  |
+| *.wb1                  |
+| *.wb2                  |
+| *.wb3                  |
+| *.qpw                  |
+| *.xlr                  |
+| *.eth                  |       
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Getting Started
+Want to integrate SheetJS in your own VSCode extension? Check out our [detailed tutorial](#) to learn how to implement these capabilities in your projects.
 
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+## Learn More
+For more information on using this extension and integrating SheetJS capabilities in your own projects, visit our [documentation](https://docs.sheetjs.com/docs/).
 
 ---
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+_Created by Asadbek Karimov  | [asad@sheetjs.com](mailto:asad@sheetjs.com) | [asadk.dev](https://asadk.dev)_
