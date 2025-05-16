@@ -5,7 +5,7 @@
   "author": "Asadbek Karimov <contact@asadk.dev>",
   "publisher": "asadbek",
   "icon": "img/logo.png",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://git.sheetjs.com/asadbek064/sheetjs-vscode-extension/issues"
@@ -35,99 +35,37 @@
         "viewType": "excelViewer.spreadsheet",
         "displayName": "SheetJS Viewer",
         "selector": [
-          {
-            "filenamePattern": "*.xlsx"
-          },
-          {
-            "filenamePattern": "*.xlsm"
-          },
-          {
-            "filenamePattern": "*.xlsb"
-          },
-          {
-            "filenamePattern": "*.xls"
-          },
-          {
-            "filenamePattern": "*.xlw"
-          },
-          {
-            "filenamePattern": "*.xlr"
-          },
-          {
-            "filenamePattern": "*.csv"
-          },
-          {
-            "filenamePattern": "*.dif"
-          },
-          {
-            "filenamePattern": "*.slk"
-          },
-          {
-            "filenamePattern": "*.sylk"
-          },
-          {
-            "filenamePattern": "*.prn"
-          },
-          {
-            "filenamePattern": "*.numbers"
-          },
-          {
-            "filenamePattern": "*.et"
-          },
-          {
-            "filenamePattern": "*.ods"
-          },
-          {
-            "filenamePattern": "*.fods"
-          },
-          {
-            "filenamePattern": "*.uos"
-          },
-          {
-            "filenamePattern": "*.dbf"
-          },
-          {
-            "filenamePattern": "*.wk1"
-          },
-          {
-            "filenamePattern": "*.wk3"
-          },
-          {
-            "filenamePattern": "*.wks"
-          },
-          {
-            "filenamePattern": "*.wk2"
-          },
-          {
-            "filenamePattern": "*.wk4"
-          },
-          {
-            "filenamePattern": "*.123"
-          },
-          {
-            "filenamePattern": "*.wq1"
-          },
-          {
-            "filenamePattern": "*.wq2"
-          },
-          {
-            "filenamePattern": "*.wb1"
-          },
-          {
-            "filenamePattern": "*.wb2"
-          },
-          {
-            "filenamePattern": "*.wb3"
-          },
-          {
-            "filenamePattern": "*.qpw"
-          },
-          {
-            "filenamePattern": "*.xlr"
-          },
-          {
-            "filenamePattern": "*.eth"
-          }
+          {"filenamePattern": "*.xlsx"},
+          {"filenamePattern": "*.xlsm"},
+          {"filenamePattern": "*.xlsb"},
+          {"filenamePattern": "*.xls"},
+          {"filenamePattern": "*.xlw"},
+          {"filenamePattern": "*.xlr"},
+          {"filenamePattern": "*.csv"},
+          {"filenamePattern": "*.dif"},
+          {"filenamePattern": "*.slk"},
+          {"filenamePattern": "*.sylk"},
+          {"filenamePattern": "*.prn"},
+          {"filenamePattern": "*.numbers"},
+          {"filenamePattern": "*.et"},
+          {"filenamePattern": "*.ods"},
+          {"filenamePattern": "*.fods"},
+          {"filenamePattern": "*.uos"},
+          {"filenamePattern": "*.dbf"},
+          {"filenamePattern": "*.wk1"},
+          {"filenamePattern": "*.wk3"},
+          {"filenamePattern": "*.wks"},
+          {"filenamePattern": "*.wk2"},
+          {"filenamePattern": "*.wk4"},
+          {"filenamePattern": "*.123"},
+          {"filenamePattern": "*.wq1"},
+          {"filenamePattern": "*.wq2"},
+          {"filenamePattern": "*.wb1"},
+          {"filenamePattern": "*.wb2"},
+          {"filenamePattern": "*.wb3"},
+          {"filenamePattern": "*.qpw"},
+          {"filenamePattern": "*.xlr"},
+          {"filenamePattern": "*.eth" }
         ],
         "priority": "default"
       }

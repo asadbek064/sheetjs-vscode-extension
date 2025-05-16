@@ -3,12 +3,11 @@ import * as XLSX from 'xlsx';
 import { ExcelDocument } from './excelDocument';
 import { getLoadingViewHtml, getErrorViewHtml, getExcelViewerHtml } from './webviewContent';
 import { parseRange, colLetterToNum, numToColLetter } from './excelUtils';
+import { WorkbookCache } from './cacheManagement/workbookCache';
 
 export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<ExcelDocument> {
-  // cache workbooks in memory to avoid re-parsing
-  private workbookCache = new Map<string, XLSX.WorkBook>();
-  private sheetCache = new Map<string, string>();
-
+  private cache: WorkbookCache;
+  
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     return vscode.window.registerCustomEditorProvider(
       'excelViewer.spreadsheet',
@@ -17,7 +16,9 @@ export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<
     );
   }
 
-  constructor(private readonly context: vscode.ExtensionContext) { }
+  constructor(private readonly context: vscode.ExtensionContext) {
+    this.cache = new WorkbookCache(20, 255);
+  }
 
   async openCustomDocument(uri: vscode.Uri): Promise<ExcelDocument> {
     console.log(`Opening document: ${uri.fsPath}`);
@@ -66,22 +67,29 @@ export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<
   }
 
   private async processExcelFile(document: ExcelDocument, webviewPanel: vscode.WebviewPanel): Promise<void> {
+    const stat = await vscode.workspace.fs.stat(document.uri);
+    const cacheKey = `${document.uri.toString()}-${stat.mtime}`;
+
     // check if we have a cached workbook for this file
     let workbook: XLSX.WorkBook;
-    const cacheKey = document.uri.toString();
-
-    if (this.workbookCache.has(cacheKey)) {
+    
+    if (this.cache.hasWorkbook(cacheKey)) {
       console.log('Using cached workbook');
-      workbook = this.workbookCache.get(cacheKey)!;
+      workbook = this.cache.getWorkbook(cacheKey)!;
       this.updateLoadingProgress(webviewPanel, 'Using cached workbook...');
     } else {
+      // clear old caches for this URI
+      this.cache.clearCachesForUri(document.uri.toString());
+
+      // load workbook
       workbook = await this.loadWorkbook(document, webviewPanel);
     }
 
     // setup the initial view with just the sheet selector
     const sheetNames = workbook.SheetNames;
-    this.setupWebviewContent(document, webviewPanel, workbook, sheetNames);
+    this.setupWebviewContent(document, webviewPanel, workbook, sheetNames, cacheKey);
   }
+
 
   private async loadWorkbook(document: ExcelDocument, webviewPanel: vscode.WebviewPanel): Promise<XLSX.WorkBook> {
     this.updateLoadingProgress(webviewPanel, 'Reading file...');
@@ -121,9 +129,11 @@ export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<
 
       this.updateLoadingProgress(webviewPanel, 'Preparing view...');
 
+      const stat = await vscode.workspace.fs.stat(document.uri);
+      const cacheKey = `${document.uri.toString()}-${stat.mtime}`;
+
       // cache the workbook
-      const cacheKey = document.uri.toString();
-      this.workbookCache.set(cacheKey, workbook);
+      this.cache.setWorkbook(cacheKey, workbook);
 
       return workbook;
     } catch (error) {
@@ -137,7 +147,8 @@ export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<
     document: ExcelDocument,
     webviewPanel: vscode.WebviewPanel,
     workbook: XLSX.WorkBook,
-    sheetNames: string[]
+    sheetNames: string[],
+    cacheKey: string
   ): void {
     // exit early if there are no sheets
     if (sheetNames.length === 0) {
@@ -165,20 +176,21 @@ export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<
     webviewPanel.webview.html = getExcelViewerHtml(sheetNames, sheetSelector);
 
     // handle messages from the webview
-    this.setupMessageHandlers(document, webviewPanel, workbook);
+    this.setupMessageHandlers(document, webviewPanel, workbook, cacheKey);
+
   }
 
   private setupMessageHandlers(
     document: ExcelDocument,
     webviewPanel: vscode.WebviewPanel,
-    workbook: XLSX.WorkBook
+    workbook: XLSX.WorkBook,
+    cacheKey: string
   ): void {
-    const baseCacheKey = document.uri.toString();
 
     webviewPanel.webview.onDidReceiveMessage(async message => {
       if (message.type === 'getSheetPage') {
         await this.handleGetSheetPage(
-          baseCacheKey,
+          cacheKey,
           workbook,
           webviewPanel,
           message
@@ -194,7 +206,7 @@ export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<
     message: any
   ): Promise<void> {
     const { sheetName, page, rowsPerPage, maxColumns } = message;
-    const cacheKey = `${baseCacheKey}-${sheetName}-page-${page}`;
+    const cacheKey = this.cache.generateSheetKey(baseCacheKey, sheetName, page);
 
     this.updateLoadingProgress(webviewPanel, `Preparing page ${page + 1} of sheet: ${sheetName}`);
 
@@ -205,8 +217,8 @@ export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<
         let rangeInfo: any = null;
 
         // check if this page is already cached
-        if (this.sheetCache.has(cacheKey)) {
-          sheetHtml = this.sheetCache.get(cacheKey)!;
+        if (this.cache.hasSheet(cacheKey)) {
+          sheetHtml = this.cache.getSheet(cacheKey)!;
         } else {
           const sheet = workbook.Sheets[sheetName];
 
@@ -220,7 +232,7 @@ export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<
             sheetHtml = this.processSheetPage(sheet, rangeInfo, page, rowsPerPage, maxColumns);
 
             // cache the result
-            this.sheetCache.set(cacheKey, sheetHtml);
+            this.cache.setSheet(cacheKey, sheetHtml);
           }
         }
 
@@ -264,8 +276,8 @@ export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<
     const newPageSheet: XLSX.WorkSheet = { '!ref': pageRange };
 
     // preserve important sheet properties
-    if (sheet['!cols']) newPageSheet['!cols'] = sheet['!cols'];
-    if (sheet['!rows']) newPageSheet['!rows'] = sheet['!rows'];
+    if (sheet['!cols']) { newPageSheet['!cols'] = sheet['!cols']; }
+    if (sheet['!rows']) { newPageSheet['!rows'] = sheet['!rows']; }
     if (sheet['!merges']) {
       // filter merges that are in this page's range
       newPageSheet['!merges'] = sheet['!merges'].filter(merge => {
@@ -296,4 +308,5 @@ export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<
     // convert to HTML
     return XLSX.utils.sheet_to_html(newPageSheet);
   }
+
 }

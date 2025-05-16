@@ -1,6 +1,6 @@
 // parse range like A1:Z100 and return information about dimensions
 export function parseRange(rangeStr: string) {
-  if (!rangeStr || !rangeStr.includes(':')) return null;
+  if (!rangeStr || !rangeStr.includes(':')) { return null; }
   
   const parts = rangeStr.split(':');
   const startCell = parts[0];
