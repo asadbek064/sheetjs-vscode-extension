@@ -17,19 +17,12 @@ Powered by [SheetJS](http://sheetjs.com/) a powerful VSCode extension that lets 
 
 
 ## Key Features
-The extension uses sophisticated optimization techniques to ensure smooth performance:
 
-- **Multi-level Caching**
-    - Workbook cache prevents redundant parsing of the same files
-    - Sheet HTML cache eliminates regeneration of previously viewed sheets
-- **Smart Loading Strategy**
-    - First sheet loads immediately for instant feedback
-    - Additional sheets load on-demand when selected
-    - Preserved webview context maintains your state even when hidden
-- **Responsive Interface**
-    - Immediate loading spinner provides visual feedback
-    - Sheet-switching indicators keep you informed
-    - Persistent state across view changes
+- Caches workbooks and sheets to avoid re-parsing files
+- Loads sheets on-demand when switching between them
+- Automatically reloads when files are edited externally
+- Handles mega large files with pagination
+- Toggle viewer on/off for specific file extensions via command palette or context menu
 
 ## Supported File Formats
 
@@ -65,10 +58,40 @@ The extension uses sophisticated optimization techniques to ensure smooth perfor
 | *.wb3                  |
 | *.qpw                  |
 | *.xlr                  |
-| *.eth                  |       
+| *.eth                  |
+
+## Usage
+
+### Disabling/Enabling the Viewer
+
+You can easily disable the SheetJS viewer for specific file extensions:
+
+<img src="https://git.sheetjs.com/asadbek064/sheetjs-vscode-extension/raw/branch/main/asset/toggle_context_menu.png" alt="SheetJS VSCode Extension Preview" width="600"/>
+<img src="https://git.sheetjs.com/asadbek064/sheetjs-vscode-extension/raw/branch/main/asset/toggle_ext_via_palette.png" alt="SheetJS VSCode Extension Preview" width="600"/>
+
+**Command Palette** (Ctrl/Cmd+Shift+P):
+- `SheetJS: Disable Viewer for Current File Extension` - Switches to default text editor for that extension
+- `SheetJS: Enable Viewer for Current File Extension` - Re-enables the viewer
+
+**Context Menu**: Right-click any spreadsheet file in the Explorer to access the same commands.
+
+**Built-in VSCode**: Right-click any file and select "Open With..." to choose between SheetJS Viewer and other editors.
 
 ## Getting Started
 Want to integrate SheetJS in your own VSCode extension? Check out our [detailed tutorial](https://docs.sheetjs.com/docs/) to learn how to implement these capabilities in your projects.
+
+## Development
+
+To run the extension in development mode, install dependencies with `pnpm install` and press F5 in VSCode. This opens a new Extension Development Host window where you can test the extension by opening any spreadsheet file.
+
+
+Build for production with `pnpm run package`.
+
+## Publishing
+```bash
+npx vsce login foo
+npx vsce publish
+```
 
 ## Learn More
 For more information on using this extension and integrating SheetJS capabilities in your own projects, visit our [documentation](https://docs.sheetjs.com/docs/).

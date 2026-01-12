@@ -7,7 +7,9 @@ import { WorkbookCache } from './cacheManagement/workbookCache';
 
 export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<ExcelDocument> {
   private cache: WorkbookCache;
-  
+  private fileWatchers: Map<string, vscode.Disposable> = new Map();
+  private webviewPanels: Map<string, vscode.WebviewPanel> = new Map();
+
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     return vscode.window.registerCustomEditorProvider(
       'excelViewer.spreadsheet',
@@ -29,6 +31,45 @@ export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<
     console.log(`Resolving editor for: ${document.uri.fsPath}`);
 
     webviewPanel.webview.options = { enableScripts: true };
+
+    // store the webview panel for this document
+    const uriKey = document.uri.toString();
+    this.webviewPanels.set(uriKey, webviewPanel);
+
+    // setup file watcher for changes to this specific file
+    const watcher = vscode.workspace.createFileSystemWatcher(
+      document.uri.fsPath
+    );
+
+    watcher.onDidChange(async () => {
+      console.log(`File changed: ${document.uri.fsPath}, reloading...`);
+
+      // clear the cache for this file
+      this.cache.clearCachesForUri(document.uri.toString());
+
+      // reload the file
+      this.setLoadingView(webviewPanel);
+      await new Promise(resolve => setTimeout(resolve, 50));
+
+      try {
+        await this.processExcelFile(document, webviewPanel);
+      } catch (error) {
+        console.error('Error reloading file:', error);
+        this.setErrorView(webviewPanel, error);
+      }
+    });
+
+    this.fileWatchers.set(uriKey, watcher);
+
+    // clean up when the panel is disposed
+    webviewPanel.onDidDispose(() => {
+      this.webviewPanels.delete(uriKey);
+      const watcher = this.fileWatchers.get(uriKey);
+      if (watcher) {
+        watcher.dispose();
+        this.fileWatchers.delete(uriKey);
+      }
+    });
 
     this.setLoadingView(webviewPanel);
 
