@@ -1,11 +1,17 @@
 # SheetJS VSCode Extension
 
 [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/asadbek.sheetjs-demo)](https://marketplace.visualstudio.com/items?itemName=asadbek.sheetjs-demo)
-[![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/asadbek.sheetjs-demo)](https://marketplace.visualstudio.com/items?itemName=asadbek.sheetjs-demo)
 [![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/asadbek.sheetjs-demo)](https://marketplace.visualstudio.com/items?itemName=asadbek.sheetjs-demo)
 
 
 [![View on Marketplace](https://img.shields.io/badge/View%20on-Marketplace-blue?style=for-the-badge&logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=asadbek.sheetjs-demo)
+[![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/asadbek.sheetjs-demo)](https://marketplace.visualstudio.com/items?itemName=asadbek.sheetjs-demo)
+
+[![View on Open VSX](https://img.shields.io/badge/View%20on-Open%20VSX-blue?style=for-the-badge&logo=eclipseide)](https://open-vsx.org/extension/asadbek/sheetjs-demo)
+[![Open VSX Downloads](https://img.shields.io/open-vsx/dt/asadbek/sheetjs-demo)](https://open-vsx.org/extension/asadbek/sheetjs-demo)
+
+
+
 
 ---
 
