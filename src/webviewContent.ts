@@ -181,12 +181,12 @@ const loadingScript = `
   });
 `;
 
-function getExcelViewerScript(sheetNames: string[]) {
+function getExcelViewerScript(sheetNames: string[], maxRows: number, maxColumns: number) {
   return `
     // config
     const config = {
-      rowsPerPage: 500,
-      maxColumns: 100
+      rowsPerPage: ${maxRows},
+      maxColumns: ${maxColumns}
     };
     
     // Store sheet names and state
@@ -405,7 +405,12 @@ export function getErrorViewHtml(error: any): string {
 }
 
 // HTML for Excel viewer
-export function getExcelViewerHtml(sheetNames: string[], sheetSelector: string): string {
+export function getExcelViewerHtml(
+  sheetNames: string[],
+  sheetSelector: string,
+  maxRows: number = 1000,
+  maxColumns: number = 100
+): string {
   const body = `
     <div class="container">
       <div class="sheet-selector">
@@ -437,5 +442,5 @@ export function getExcelViewerHtml(sheetNames: string[], sheetSelector: string):
     </div>
   `;
   
-  return createHtmlDocument(excelViewerStyles, body, getExcelViewerScript(sheetNames));
+  return createHtmlDocument(excelViewerStyles, body, getExcelViewerScript(sheetNames, maxRows, maxColumns));
 }

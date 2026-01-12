@@ -23,7 +23,7 @@ export class LRUCache<K, V> {
     if (!this.cache.has(key)) {
       return undefined;
     }
-    
+
     // update access time
     this.accessTimes.set(key, Date.now());
     return this.cache.get(key);
@@ -39,7 +39,7 @@ export class LRUCache<K, V> {
     if (!this.cache.has(key) && this.cache.size >= this.maxSize) {
       this.evictLeastRecentlyUsed();
     }
-    
+
     // store the value and update access time
     this.cache.set(key, value);
     this.accessTimes.set(key, Date.now());
@@ -105,18 +105,18 @@ export class LRUCache<K, V> {
    */
   private evictLeastRecentlyUsed(): void {
     if (this.cache.size === 0) { return; }
-    
+
     // find the oldest entry
     let oldestKey: K | undefined;
     let oldestTime = Infinity;
-    
+
     for (const [key, time] of this.accessTimes.entries()) {
       if (time < oldestTime) {
         oldestTime = time;
         oldestKey = key;
       }
     }
-    
+
     // remove the oldest entry
     if (oldestKey !== undefined) {
       console.log(`Evicting least recently used cache entry: ${String(oldestKey)}`);

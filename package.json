@@ -5,7 +5,7 @@
   "author": "Asadbek Karimov <contact@asadk.dev>",
   "publisher": "asadbek",
   "icon": "img/logo.png",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://git.sheetjs.com/asadbek064/sheetjs-vscode-extension/issues"
@@ -30,6 +30,35 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "SheetJS Viewer",
+      "properties": {
+        "sheetjs.maxRows": {
+          "type": "number",
+          "default": 1000,
+          "minimum": 1,
+          "description": "Maximum number of rows to display per page"
+        },
+        "sheetjs.maxColumns": {
+          "type": "number",
+          "default": 100,
+          "minimum": 1,
+          "description": "Maximum number of columns to display"
+        },
+        "sheetjs.maxCachedWorkbooks": {
+          "type": "number",
+          "default": 10,
+          "minimum": 1,
+          "description": "Maximum number of workbooks to keep in cache"
+        },
+        "sheetjs.maxCachedSheets": {
+          "type": "number",
+          "default": 255,
+          "minimum": 1,
+          "description": "Maximum number of rendered sheets to keep in cache"
+        }
+      }
+    },
     "commands": [
       {
         "command": "sheetjs.disableForExtension",

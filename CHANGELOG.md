@@ -2,6 +2,10 @@
 
 All notable changes to the "sheetjs-demo" extension will be documented in this file.
 
+## [0.1.1]
+  - Added control over #rows x #columns to show
+  - Added control over #worbooks and #worksheets to cache
+
 ## [0.1.0]
 
 - Added commands to disable/enable viewer for specific file extensions

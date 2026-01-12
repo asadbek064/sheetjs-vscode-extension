@@ -77,6 +77,14 @@ You can easily disable the SheetJS viewer for specific file extensions:
 
 **Built-in VSCode**: Right-click any file and select "Open With..." to choose between SheetJS Viewer and other editors.
 
+### Override Constants (Available Settings)
+- `sheetjs.maxRows` - Rows displayed per page (default: **1000**)
+- `sheetjs.maxColumns` - Columns displayed (default: **100**)
+- `sheetjs.maxCachedWorkbooks` - Workbooks kept in memory (default: **10**)
+- `sheetjs.maxCachedSheets` - Sheet pages cached (default: **255**)
+
+Changes take effect when opening a new spreadsheet file (existing open files need to be reopened)
+
 ## Getting Started
 Want to integrate SheetJS in your own VSCode extension? Check out our [detailed tutorial](https://docs.sheetjs.com/docs/) to learn how to implement these capabilities in your projects.
 

@@ -19,7 +19,10 @@ export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<
   }
 
   constructor(private readonly context: vscode.ExtensionContext) {
-    this.cache = new WorkbookCache(20, 255);
+    const config = vscode.workspace.getConfiguration('sheetjs');
+    const maxWorkbooks = config.get<number>('maxCachedWorkbooks', 10);
+    const maxSheets = config.get<number>('maxCachedSheets', 255);
+    this.cache = new WorkbookCache(maxWorkbooks, maxSheets);
   }
 
   async openCustomDocument(uri: vscode.Uri): Promise<ExcelDocument> {
@@ -213,8 +216,13 @@ export class ExcelEditorProvider implements vscode.CustomReadonlyEditorProvider<
     </div>
   `;
 
+    // get config values
+    const config = vscode.workspace.getConfiguration('sheetjs');
+    const maxRows = config.get<number>('maxRows', 1000);
+    const maxColumns = config.get<number>('maxColumns', 100);
+
     // setup up the HTML with JS to handle sheet switching
-    webviewPanel.webview.html = getExcelViewerHtml(sheetNames, sheetSelector);
+    webviewPanel.webview.html = getExcelViewerHtml(sheetNames, sheetSelector, maxRows, maxColumns);
 
     // handle messages from the webview
     this.setupMessageHandlers(document, webviewPanel, workbook, cacheKey);
